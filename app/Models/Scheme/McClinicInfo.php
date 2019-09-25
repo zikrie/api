@@ -16,14 +16,26 @@ class McClinicInfo extends Model
         // $husstatus=$req['husstatus'];
         $createMcClinicInfo= $this->create([
             'caserefno'=> isset($data['caserefno']) ? $data['caserefno'] : NULL,
-            'clinicrefno'=> isset($req['clinicrefno']) ? $req['clinicrefno'] : 1,
             'clinicinfo'=> isset($req['clinicinfo']) ? $req['clinicinfo'] : NULL,
-            'addby'=> isset($data['operid']) ? $data['operid'] : NULL,
+            'addby'=> $data['operid'],
             'dateadd'=> $dateadd,
         ]);
 
-            return  $createMcClinicInfo;
-        
-        
+        $last = $this->orderBy('clinicrefno','DESC')->first();
+            return  $last;  
     }
+
+    public function searchMcClinicInfo($req,$data)
+    {
+ 
+        $searchmcclinicinfo = $this::where('caserefno','=',$data['caserefno']) -> where ('clinicinfo','=',$req['clinicinfo'])->first(['clinicrefno']);
+        return $searchmcclinicinfo;
+
+
+    }
+    public function deleteMcClinicInfo($req)
+    {
+        $delete_McClinicInfo = $this::where('caserefno', '=', $req['caserefno'])->delete();
+        return $delete_McClinicInfo;
+    }  
 }

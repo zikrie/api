@@ -14,9 +14,9 @@ class CreateMcclinicinfoTable extends Migration
     public function up()
     {
         Schema::create('mcclinicinfo', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            // $table->integer('id');
             $table->string('caserefno');
-            $table->string('clinicrefno');
+            $table->bigIncrements('clinicrefno');
             $table->string('clinicinfo');
             $table->string('addby');
             $table->string('dateadd');

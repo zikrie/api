@@ -14,9 +14,9 @@ class CreateMcinfoTable extends Migration
     public function up()
     {
         Schema::create('mcinfo', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            // $table->integer('id');
             $table->string('caserefno');
-            $table->string('mcrefno');
+            $table->bigIncrements('mcrefno');
             $table->string('husstatus');
             $table->string('clinicrefno');
             $table->string('startdate');

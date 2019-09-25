@@ -14,9 +14,9 @@ class CreateMciteminfoTable extends Migration
     public function up()
     {
         Schema::create('mciteminfo', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            // $table->bigIncrements('id');
             $table->string('caserefno');
-            $table->string('mcitemid');
+            $table->bigIncrements('mcitemid');
             $table->string('mcrefno');
             $table->string('mcitemstartdate');
             $table->string('mcitemenddate');
