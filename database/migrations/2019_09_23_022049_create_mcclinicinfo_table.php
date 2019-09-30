@@ -21,7 +21,7 @@ class CreateMcclinicinfoTable extends Migration
             $table->string('addby');
             $table->string('dateadd');
             $table->timestamps();
-            // $table->primary(['caserefno', 'clinicrefno']);
+          //  $table->primary(['caserefno', 'clinicrefno']);
         });
     }
 

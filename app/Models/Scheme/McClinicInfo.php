@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class McClinicInfo extends Model
 {
     protected $table = 'mcclinicinfo';
+   // protected $primaryKey = 'caserefno';
+   // public $incrementing = false;
     public $timestamps = false;
     protected $guarded = [];
 
@@ -19,6 +21,7 @@ class McClinicInfo extends Model
             'clinicinfo'=> isset($req['clinicinfo']) ? $req['clinicinfo'] : NULL,
             'addby'=> $data['operid'],
             'dateadd'=> $dateadd,
+            // $table->timestamps();
         ]);
 
         $last = $this->orderBy('clinicrefno','DESC')->first();
@@ -37,5 +40,11 @@ class McClinicInfo extends Model
     {
         $delete_McClinicInfo = $this::where('caserefno', '=', $req['caserefno'])->delete();
         return $delete_McClinicInfo;
+    }  
+
+    public function getMcClinicInfo($req)
+    {
+        $get_McClinicInfo = $this::where('caserefno', '=', $req['caserefno'])-> where('clinicrefno','=',$req['clinicrefno']) -> first(['clinicinfo']);
+        return $get_McClinicInfo;
     }  
 }

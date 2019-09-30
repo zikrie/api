@@ -25,7 +25,8 @@ class CreateMciteminfoTable extends Migration
             $table->string('dateadd');
             $table->string('addby');
             $table->timestamps();
-            // $table->primary(['caserefno', 'mcitemid']);
+         //   $table->primary(['caserefno', 'mcitemid']);
+            
         });
     }
 

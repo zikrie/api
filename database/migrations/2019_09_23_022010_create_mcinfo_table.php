@@ -27,7 +27,7 @@ class CreateMcinfoTable extends Migration
             $table->string('baoapprdate');
             $table->string('scorecommend');
             $table->timestamps();
-            // $table->primary(['caserefno', 'mcrefno']);
+            //$table->primary(['caserefno', 'mcrefno']);
         });
     }
 

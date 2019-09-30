@@ -55,6 +55,8 @@ class HusInfoController extends Controller
                         $delete_McInfo = $this->mcinfo->deleteMcInfo($req);
                         $delete_McClinicInfo = $this->mcclinicinfo->deleteMcClinicInfo($req);
                         $delete_McItemInfo = $this->mciteminfo->deleteMcItemInfo($req);
+                        
+                                if(!empty($req['mcinfo']) ){
 
                                   foreach($req['mcinfo'] as $key => $parent)
                                   {
@@ -79,16 +81,23 @@ class HusInfoController extends Controller
                                           $mcrefno = $postMcInfo['mcrefno'];
                                           //  return json_encode($mcrefno);
 
-                                          foreach($req['mcitem'][$key] as $child =>$value)
-                                          {
-                                                      // return json_encode($req['mcitem']);
-                                                      $insertMcItemInfo = $this->mciteminfo->insertMcItemInfo($value,$req,$mcrefno);
-                                                      // return json_encode($insertMcItemInfo);
-                                          }
+                                          if(!empty($req['mcitem'][$key]) ){
+
+                                                foreach($req['mcitem'][$key] as $child =>$value)
+                                                {
+                                                        // return json_encode($req['mcitem']);
+                                                        $insertMcItemInfo = $this->mciteminfo->insertMcItemInfo($value,$req,$mcrefno, );
+                                                        // return json_encode($insertMcItemInfo);
+                                                }
+                                        }
                                   }
-                                  
                                   return 'success';
                                   // return json_encode($req['mcitem']);
+                                }
+
+                                return "no record";
+                                  
+                                 
                       });
 
                       if($create == "success")
@@ -97,11 +106,71 @@ class HusInfoController extends Controller
                           $data = ['errorcode'=>$errorcode];
                           return json_encode ($data);
                       }
-                      else{
-                          $errorcode = -1;
+                      else if($create == "no record"){
+                          $errorcode = 1;
                           $data = ['errorcode'=>$errorcode];
                           return json_encode ($data);
                       }
+                      else{
+                        $errorcode = -1;
+                        $data = ['errorcode'=>$errorcode];
+                        return json_encode ($data);
+                    }
+           }
+
+
+           public function show(Request $req)
+           {
+                   $clinicinfo =array();
+              //  return json_encode(['caserefno'=>$req['caserefno']]);
+                   
+              //  $get_McInfo = McInfo::all();
+               $get_McInfo = $this->mcinfo->getMcInfo($req);
+
+                // $get_McClinicInfo = McClinicInfo::all();
+                // $get_McItemInfo = McItemInfo::all();
+                $arrayparent = [];
+                $arraychild = [];
+
+                if(!empty($get_McInfo) )
+                {
+                        $cnt = 0;
+                        foreach($get_McInfo as $key => $parent)
+                        {
+                                $clinicrefno = $parent['clinicrefno'];
+                                $mcrefno = $parent['mcrefno'];
+
+                                $get_McClinicInfo = $this->mcclinicinfo->getMcClinicInfo($parent,$req,$clinicrefno);
+
+                                $get_ClinicInfo = $get_McClinicInfo['clinicinfo'];
+
+                                $McItemInfo = $this->mciteminfo->getMcItemInfo($req, $mcrefno);
+
+                                if(!empty($McItemInfo) )
+                                {
+
+                                                foreach($McItemInfo as $child)
+                                                {
+                                                        // return json_encode($child);
+                                                
+                                                        $arraychild[$key][] = ['mcitemstartdate'=>$child['mcitemstartdate'],'mcitemenddate'=>$child['mcitemenddate'],'totalmcitem'=>$child['totalmcitem'],'approvalsts'=>$child['approvalsts']];
+                                                        
+                                                }
+
+                                                $arrayparent[] = ['husstatus'=>$parent['husstatus'],'clinicinfo'=>$get_ClinicInfo,'startdate'=>$parent['startdate'],'enddate'=>$parent['enddate'],'totalmc'=>$parent['totalmc'],'scorecommend'=>$parent['scorecommend']];
+                                                
+
+                                                // return json_encode($parent[]);
+
+                                }
+
+                                $cnt++;
+                        }
+                }
+
+                $data = ['record'=>$cnt,'parent'=>$arrayparent,'child'=>$arraychild ];
+                return json_encode($data);
+             
            }
 
 

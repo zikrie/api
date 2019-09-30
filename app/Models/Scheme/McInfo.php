@@ -20,7 +20,6 @@ class McInfo extends Model
         // $husstatus=$req['husstatus'];
         $createMcInfo= $this->create([
             'caserefno'=> isset($data['caserefno']) ? $data['caserefno'] : NULL,
-            // 'mcrefno'=> isset($req['mcrefno']) ? $req['mcrefno'] : 3,
             'husstatus'=> isset($req['husstatus']) ? $req['husstatus'] : NULL,
             'clinicrefno'=> $clinicrefno1,
             'startdate'=> isset($req['startdate']) ? $req['startdate'] : NULL,
@@ -32,16 +31,20 @@ class McInfo extends Model
             'scorecommend'=> isset($req['scorecommend']) ? $req['scorecommend'] : NULL,
         ]);
 
-        $last = $this->orderBy('mcrefno','DESC')->first();
-
+            $last = $this->orderBy('mcrefno','DESC')->first();
             return  $last;
-        
-        
     }
 
     public function deleteMcInfo($req)
     {
         $delete_McInfo = $this::where('caserefno', '=', $req['caserefno'])->delete();
         return $delete_McInfo;
+    }  
+
+    public function getMcInfo($req)
+    {
+       $get_McInfo = $this::where('caserefno', '=', $req['caserefno'])->get();
+       // $get_McInfo = McInfo::all();
+        return $get_McInfo;
     }  
 }
