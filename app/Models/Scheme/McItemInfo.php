@@ -12,7 +12,7 @@ class McItemInfo extends Model
 
     
    
-    public function insertMcItemInfo($req,$data,$mcrefno,$child)
+    public function insertMcItemInfo($req,$data,$mcrefno ,$new_McItemInfo)
     {
         // $mcrefno1 =$mcrefno;
         $dateadd = date('Ymd');
@@ -21,12 +21,12 @@ class McItemInfo extends Model
 
         $createMcItemInfo= $this->create([
             'caserefno'=> isset($data['caserefno']) ? $data['caserefno'] : NULL,
-            //'mcitemid'=> $child,
+            'mcitemid'=> $new_McItemInfo,
             'mcrefno'=> $mcrefno,
            // 'clinicrefno' => $child,
             'mcitemstartdate'=> isset($req['mcitemstartdate']) ? $req['mcitemstartdate'] : NULL,
             'mcitemenddate'=> isset($req['mcitemenddate']) ? $req['mcitemenddate'] : NULL,
-            'totalmcitem'=> isset($req['totalmcitem']) ? $dareqta['totalmcitem'] : NULL,
+            'totalmcitem'=> isset($req['totalmcitem']) ? $req['totalmcitem'] : NULL,
             'approvalsts'=> isset($req['approvalsts']) ? $req['approvalsts'] : NULL,
             'dateadd'=> $dateadd,
             'addby'=> $data['operid'],
@@ -52,4 +52,21 @@ class McItemInfo extends Model
         $get_McItemInfo = $this::where('caserefno', '=', $req['caserefno']) -> where('mcrefno','=',$mcrefno) -> get();
         return $get_McItemInfo;
     }  
+
+    public function newMcItemInfo($req)
+    {
+          $new_McItemInfo  = $this::where('caserefno', '=', $req['caserefno']) -> orderBy('mcitemid','desc') -> first(['mcitemid']);
+        //   dd($new_McClinicInfo);
+          $mcitemid = 0;
+        
+          if(!empty($new_McItemInfo))
+          {
+                $mcitemid= $new_McItemInfo->mcitemid;
+
+          }
+          $runningnum = $mcitemid + 1;
+        //   $generate_McClinicInfo = $new_McItemInfo + 1;
+        return $runningnum;
+    }
+
 }

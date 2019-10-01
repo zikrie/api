@@ -11,7 +11,7 @@ class McInfo extends Model
     protected $guarded = [];
     // protected $fillable = ['caserefno','mcrefno','husstatus','clinicrefno', 'startdate', 'enddate','totalmc','dateadd','addby','baoapprdate','scorecommend'];
 
-    public function insertMcInfo($req,$data,$clinicrefno)
+    public function insertMcInfo($req,$data,$clinicrefno,$new_McRefNo )
     {
         $dateadd = date('Ymd');
 
@@ -20,6 +20,7 @@ class McInfo extends Model
         // $husstatus=$req['husstatus'];
         $createMcInfo= $this->create([
             'caserefno'=> isset($data['caserefno']) ? $data['caserefno'] : NULL,
+            'mcrefno' => $new_McRefNo,
             'husstatus'=> isset($req['husstatus']) ? $req['husstatus'] : NULL,
             'clinicrefno'=> $clinicrefno1,
             'startdate'=> isset($req['startdate']) ? $req['startdate'] : NULL,
@@ -47,4 +48,20 @@ class McInfo extends Model
        // $get_McInfo = McInfo::all();
         return $get_McInfo;
     }  
+
+    public function newMcInfo($req)
+    {
+          $new_McInfo  = $this::where('caserefno', '=', $req['caserefno']) -> orderBy('mcrefno','desc') -> first(['mcrefno']);
+         //dd($new_McInfo);
+          $mcrefno = 0;
+        
+          if(!empty($new_McInfo))
+          {
+                $mcrefno= $new_McInfo->mcrefno;
+
+          }
+          $runningnum = $mcrefno + 1;
+        //   $generate_McClinicInfo = $new_McInfo + 1;
+        return $runningnum;
+    }
 }

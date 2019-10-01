@@ -49,6 +49,15 @@ class HusInfoController extends Controller
             { 
               // return json_encode($mc['husstatus']);
 
+
+                // $newhMcClinicInfo = $this->mcclinicinfo->newMcClinicInfo($req);
+                // return json_encode($newhMcClinicInfo);
+
+              
+                
+
+
+
                       $create = DB::transaction(function() use ($req)
                       {
 
@@ -56,7 +65,8 @@ class HusInfoController extends Controller
                         $delete_McClinicInfo = $this->mcclinicinfo->deleteMcClinicInfo($req);
                         $delete_McItemInfo = $this->mciteminfo->deleteMcItemInfo($req);
                         
-                                if(!empty($req['mcinfo']) ){
+                                if(!empty($req['mcinfo']) )
+                                {
 
                                   foreach($req['mcinfo'] as $key => $parent)
                                   {
@@ -71,14 +81,17 @@ class HusInfoController extends Controller
                                           }
                                           else
                                           {
-                                                      $postMcClinicInfo = $this->mcclinicinfo->insertMcClinicInfo($parent,$req);
-                                                      $clinicrefno = $postMcClinicInfo['clinicrefno'];
+                                                      $clinicrefno = $this->mcclinicinfo->newMcClinicInfo($req);
+                                                      $postMcClinicInfo = $this->mcclinicinfo->insertMcClinicInfo($parent,$req,$clinicrefno);
+                                                //       $clinicrefno = $postMcClinicInfo['clinicrefno'];
                                           }
 
                                           // return json_encode($clinicrefno);
-                                          $postMcInfo = $this->mcinfo->insertMcInfo($parent,$req,$clinicrefno);
+                                          $new_McRefNo = $this->mcinfo->newMcInfo($req);
+                                          $postMcInfo = $this->mcinfo->insertMcInfo($parent,$req,$clinicrefno,$new_McRefNo);
+                                         // $postMcInfo = $this->mcinfo->insertMcInfo($parent,$req,$clinicrefno);
                                           // return json_encode($postMcInfo);
-                                          $mcrefno = $postMcInfo['mcrefno'];
+                                        //   $mcrefno = $postMcInfo['mcrefno'];
                                           //  return json_encode($mcrefno);
 
                                           if(!empty($req['mcitem'][$key]) ){
@@ -86,7 +99,8 @@ class HusInfoController extends Controller
                                                 foreach($req['mcitem'][$key] as $child =>$value)
                                                 {
                                                         // return json_encode($req['mcitem']);
-                                                        $insertMcItemInfo = $this->mciteminfo->insertMcItemInfo($value,$req,$mcrefno, );
+                                                        $new_McItemInfo = $this->mciteminfo->newMcItemInfo($req);
+                                                        $insertMcItemInfo = $this->mciteminfo->insertMcItemInfo($value,$req,$new_McRefNo,$new_McItemInfo );
                                                         // return json_encode($insertMcItemInfo);
                                                 }
                                         }
@@ -123,9 +137,11 @@ class HusInfoController extends Controller
            {
                    $clinicinfo =array();
               //  return json_encode(['caserefno'=>$req['caserefno']]);
+
                    
               //  $get_McInfo = McInfo::all();
                $get_McInfo = $this->mcinfo->getMcInfo($req);
+        //        return json_encode($get_McInfo);
 
                 // $get_McClinicInfo = McClinicInfo::all();
                 // $get_McItemInfo = McItemInfo::all();

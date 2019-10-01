@@ -18,7 +18,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-//scheme hus info by zikrie
+// hus info sco
 Route::post('/mcinfo','Scheme\HusInfoController@post');
 
 Route::get('/mcinfoo','Scheme\HusInfoController@show');
+
+
+//preparer info sco
+Route::get('/preparerInfo','Scheme\PreparerInfoController@show');
+
+//recommendation sco
+Route::post('/recommend','Scheme\Recommendation@post');
