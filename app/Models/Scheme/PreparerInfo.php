@@ -13,8 +13,14 @@ class PreparerInfo extends Model
 
     public function getPreparerInfo($req)
     {
-       $get_PreparerInfo = $this::where('caserefno', '=', $req['caserefno'])->get();
+     //  $get_PreparerInfo = $this::where('caserefno', '=', $req['caserefno'])->get();
+       $get_PreparerInfo = $this::select('addby','dateadd')->where('caserefno', '=', $req['caserefno'])->get();
          return $get_PreparerInfo;
         //  dd($get_PreparerInfo);
+
+      
+       
+
+      
     }  
 }
