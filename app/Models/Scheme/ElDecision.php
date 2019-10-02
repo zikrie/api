@@ -57,6 +57,25 @@ class ElDecision extends Model
     }
 
 
+    public function getElDecision($req)
+    {
+       $get_ElDecision = $this::select('rc_q1','rc_q2','rc_q3','rc_q4','rc_q5','rc_recommend','rc_recommenddate','rc_recommendby')->where('rc_caserefno', '=', $req['rc_caserefno'])->orWhere('rc_recommendrole', '=', $req['rc_recommendrole'])->get();
+        return $get_ElDecision;
+        //  dd($get_ElDecision);
+    }  
+
+    public function getRecommend($req)
+    {
+       $get_recommend = $this::select('rc_q1','rc_q2','rc_q3','rc_q4','rc_q5','rc_recommend','rc_recommenddate','rc_recommendby')->where('rc_caserefno', '=', $req['rc_caserefno'])->orWhere('rc_recommendrole', '=', $req['rc_recommendrole'])->get();
+        return $get_recommend;
+        //  dd($get_recommend);
+    }  
+
+
+
+
+
+
 
 
 

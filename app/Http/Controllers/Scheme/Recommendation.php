@@ -38,4 +38,17 @@ class Recommendation extends Controller
                         }
       //  return json_encode($create);
     }
+
+
+    public function show(Request $req)
+    {
+        $get_ElDecision = $this->eldecision->getElDecision($req);
+        return json_encode($get_ElDecision);
+    }
+
+    public function displayRecommend(Request $req)
+    {
+        $get_recommend = $this->eldecision->getRecommend($req);
+        return json_encode($get_recommend);
+    }
 }

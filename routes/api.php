@@ -29,3 +29,4 @@ Route::get('/preparerInfo','Scheme\PreparerInfoController@show');
 
 //recommendation sco
 Route::post('/recommend','Scheme\Recommendation@post');
+Route::get('/recommendd','Scheme\Recommendation@show');
